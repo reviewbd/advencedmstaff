@@ -51,3 +51,19 @@ RegisterNetEvent("mstaff:receiveMessage")
 AddEventHandler("mstaff:receiveMessage", function(message)
     TriggerClientEvent("chat:addMessage", -1, { args = { "^3[Staff]", message } })
 end)
+
+-- A activer pour avoir un bot discord qui permet d'envoyer des mstaff depuis le discord
+--[[
+local WebSocket = require("websocket")
+
+local ws = WebSocket.server("0.0.0.0", 30120)
+
+ws:on("message", function(client, message)
+    local data = json.decode(message)
+
+    if data.event == "mstaffMessage" then
+        print(("Message reçu du bot Discord : %s (de %s)"):format(data.content, data.sender))
+        TriggerClientEvent('mstaff:showMessage', -1, data.content, data.sender)
+    end
+end)
+]]
